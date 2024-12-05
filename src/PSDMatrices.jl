@@ -42,14 +42,20 @@ end
 # LinearAlgebra overloads
 
 function det(M::PSDMatrix)
-    confirm_factor_is_square(M)
-    return det(M.R)^2
+    if size(M.R, 1) == size(M.R, 2)
+        return det(M.R)^2
+    else
+        return prod(svdvals(M.R)) ^ 2
+    end
 end
 
 function logabsdet(M::PSDMatrix)
-    confirm_factor_is_square(M)
-    _logabsdet, _sign = logabsdet(M.R)
-    return 2 * _logabsdet, _sign^2
+    if size(M.R, 1) == size(M.R, 2)
+        _logabsdet, _sign = logabsdet(M.R)
+        return 2 * _logabsdet, _sign^2
+    else
+        return 2 * sum(log, svdvals(M.R)), 1
+    end
 end
 
 function diag(M::PSDMatrix)

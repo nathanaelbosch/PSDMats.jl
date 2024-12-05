@@ -37,13 +37,8 @@ eltypes = (Int64, Float64, BigFloat)
 
         @testset "LinearAlgebra" begin
             @test diag(S) ≈ diag(Matrix(S))
-            if size(M, 1) == size(M, 2)
-                @test det(S) ≈ det(Matrix(S))
-                @test logdet(S) ≈ logdet(Matrix(S))
-            else
-                @test_throws MethodError det(S)
-                @test_throws MethodError logdet(S)
-            end
+            @test det(S) ≈ det(Matrix(S))
+            @test logdet(S) ≈ logdet(Matrix(S))
             if (size(M, 1) >= size(M, 2))
                 @test S \ X ≈ Matrix(S) \ X
                 @test X / S ≈ X / Matrix(S)
